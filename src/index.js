@@ -15,59 +15,67 @@ const refs = {
 refs.form.addEventListener("submit", onSearch); 
 refs.buttonLoadMore.addEventListener("click", onLoad);
 
-let inputValue = "";
+
 
 import { fetchPicsPixabay } from "./fetchPixabay";
 
+import PicsApiService from "./apiservice";
 
+
+const picsApiService = new PicsApiService();
+
+console.log(picsApiService);
 
 
 function onSearch(event) {
 
-    event.preventDefault();
-    const inputValue = event.currentTarget.elements.searchQuery.value.trim();
+  event.preventDefault();
+  
+  picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
+  picsApiService.fetchPicsPixabay();
 
 
-  if (inputValue === "") {
-    clearAll();
+//   if (inputValue === "") {
+//     clearAll();
 
-     Notiflix.Notify.warning('Please type something');
+//      Notiflix.Notify.warning('Please type something');
 
-    return;
+//     return;
 
-  } else {
+//   } else {
 
-    fetchPicsPixabay(inputValue)
+//     fetchPicsPixabay(inputValue)
    
-      .then(data => {
-        console.log(data)
+//       .then(data => {
+//         console.log(data)
         
-if(data.hits.length === 0) {
-  throw new Error(response.statusText)
-}
+// if(data.hits.length === 0) {
+//   throw new Error(response.statusText)
+// }
 
-else {
-  clearAll();
+// else {
+//   clearAll();
         
-  pageNumber += 1;
-        createMarkup(data);
+//         createMarkup(data);
 
-         Notiflix.Notify.success('WOOOOOW! Wounderfull pictures!You have success!');
-        }
-      })
-      .catch(error => {
+//          Notiflix.Notify.success('WOOOOOW! Wounderfull pictures!You have success!');
+//         }
+//       })
+//       .catch(error => {
 
-        clearAll();
+//         clearAll();
 
-        callError(error);
+//         callError(error);
 
-        })
-  }
+//         })
+//   }
 
     
 }
 
-function onLoad() { }
+function onLoad() { 
+  picsApiService.fetchPicsPixabay();
+}
 
 
 
