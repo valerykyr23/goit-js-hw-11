@@ -30,9 +30,12 @@ console.log(picsApiService);
 function onSearch(event) {
 
   event.preventDefault();
+
+  clearAll();
   
   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
-  picsApiService.fetchPicsPixabay();
+  picsApiService.resetPage();
+  picsApiService.fetchPicsPixabay().then(createMarkup);
 
 
 //   if (inputValue === "") {
@@ -74,7 +77,7 @@ function onSearch(event) {
 }
 
 function onLoad() { 
-  picsApiService.fetchPicsPixabay();
+  picsApiService.fetchPicsPixabay().then(createMarkup);
 }
 
 
@@ -83,38 +86,42 @@ function callError (error) {
 Notiflix.Notify.failure("Ups! We dont have pics that you are looking for.");
 }
 
+
+
+
+
 function createMarkup(array) {
 
-  let showingObj = array.hits;
-
-  console.log(array.hits.length)
   
-
-  
-  const markup = showingObj.map(obj => `<div class="photo-card">
-   <a>  href="${obj.largeImageURL}"
-  <img src="${obj.webformatURL}" alt="${obj.tags}" loading="lazy" /> </a>
+  const markup = array.map(hit => `<div class="photo-card">
+   <a>  href="${hit.largeImageURL}"
+  <img src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" /> </a>
   <div class="info">
     <p class="info-item">
-      <b>Likes: ${obj.likes}</b>
+      <b>Likes: ${hit.likes}</b>
     </p>
     <p class="info-item">
-      <b>Views: ${obj.views}</b>
+      <b>Views: ${hit.views}</b>
     </p>
     <p class="info-item">
-      <b>Comments: ${obj.comments}</b>
+      <b>Comments: ${hit.comments}</b>
     </p>
     <p class="info-item">
-      <b>Downloads: ${obj.downloads}</b>
+      <b>Downloads: ${hit.downloads}</b>
     </p>
   </div>
 </div>`).join("");
     
-    // {webformatURL,largeImageURL,tags,likes,views,comments,downloads}
-refs.gallery.insertAdjacentHTML("beforeend", markup);
+   
+  refs.gallery.insertAdjacentHTML("beforeend", markup);
+  
 }
 
 
 function clearAll() {
   refs.gallery.innerHTML = "";
 }
+
+
+
+ // {webformatURL,largeImageURL,tags,likes,views,comments,downloads}
