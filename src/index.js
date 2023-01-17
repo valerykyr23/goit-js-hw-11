@@ -1,3 +1,8 @@
+
+import Notiflix from 'notiflix';
+Notiflix.Notify.init({ cssAnimationStyle: "zoom", fontAwesomeIconStyle: "shadow" });
+
+
 const refs = {
     input: document.querySelector("input"),
     form: document.querySelector(".search-form"),
@@ -9,11 +14,10 @@ const refs = {
  
 refs.form.addEventListener("submit", onSearch); 
 refs.buttonLoadMore.addEventListener("click", onLoad);
+
 let inputValue = "";
 
-
-const API_KEY = "32855803-d56bfd48c48aac08c2ef5d962";
-const BASE_URL = "https://pixabay.com/api";
+import { fetchPicsPixabay } from "./fetchPixabay";
 
 
 
@@ -21,43 +25,88 @@ const BASE_URL = "https://pixabay.com/api";
 function onSearch(event) {
 
     event.preventDefault();
-    const inputValue = event.currentTarget.elements.searchQuery.value;
-    console.log(inputValue)
+    const inputValue = event.currentTarget.elements.searchQuery.value.trim();
 
-    const url = `${BASE_URL}/?key=${API_KEY}&q=${inputValue}&image_type="photo"&orientation="horizontal"&safesearch=true`;
 
-    return fetch(url).then(response => response.json())
-        .then(data => {
-            console.log(data)
-        createMarkup(data)})
-        .catch(error => console.log(error))
+  if (inputValue === "") {
+    clearAll();
+
+     Notiflix.Notify.warning('Please type something');
+
+    return;
+
+  } else {
+
+    fetchPicsPixabay(inputValue)
+   
+      .then(data => {
+        console.log(data)
+        
+if(data.hits.length === 0) {
+  throw new Error(response.statusText)
+}
+
+else {
+  clearAll();
+        
+  pageNumber += 1;
+        createMarkup(data);
+
+         Notiflix.Notify.success('WOOOOOW! Wounderfull pictures!You have success!');
+        }
+      })
+      .catch(error => {
+
+        clearAll();
+
+        callError(error);
+
+        })
+  }
+
+    
 }
 
 function onLoad() { }
 
+
+
+function callError (error) { 
+Notiflix.Notify.failure("Ups! We dont have pics that you are looking for.");
+}
+
 function createMarkup(array) {
 
-    console.log(array.hits)
+  let showingObj = array.hits;
+
+  console.log(array.hits.length)
+  
 
   
-    const markup = array.map(array => `<div class="photo-card">
-  <img src="${array.webformatURL}" alt="${array.tags}" loading="lazy" />
+  const markup = showingObj.map(obj => `<div class="photo-card">
+   <a>  href="${obj.largeImageURL}"
+  <img src="${obj.webformatURL}" alt="${obj.tags}" loading="lazy" /> </a>
   <div class="info">
     <p class="info-item">
-      <b>Likes: ${array.likes}</b>
+      <b>Likes: ${obj.likes}</b>
     </p>
     <p class="info-item">
-      <b>Views: ${array.views}</b>
+      <b>Views: ${obj.views}</b>
     </p>
     <p class="info-item">
-      <b>Comments: ${array.comments}</b>
+      <b>Comments: ${obj.comments}</b>
     </p>
     <p class="info-item">
-      <b>Downloads: ${array.downloads}</b>
+      <b>Downloads: ${obj.downloads}</b>
     </p>
   </div>
 </div>`).join("");
     
     // {webformatURL,largeImageURL,tags,likes,views,comments,downloads}
 refs.gallery.insertAdjacentHTML("beforeend", markup);
+}
+
+
+function clearAll() {
+  refs.gallery.innerHTML = "";
 }
