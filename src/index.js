@@ -27,6 +27,27 @@ const picsApiService = new PicsApiService();
 console.log(picsApiService);
 
 
+// function onSearch(event) {
+
+//   event.preventDefault();
+
+//   clearAll();
+  
+//   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
+//   picsApiService.resetPage();
+//   picsApiService.fetchPicsPixabay().then(hits => {
+//     if (hits.length > 0) {
+//       console.log(hits.length);
+//       createMarkup(hits);
+//       Notiflix.Notify.success('Hooray! We found totalHits images.')
+//       } else {
+//         Notiflix.Notify.failure(
+//             'Sorry, there are no images matching your search query. Please try again.')
+//       }
+//     }) 
+// }
+
+
 function onSearch(event) {
 
   event.preventDefault();
@@ -34,28 +55,43 @@ function onSearch(event) {
   clearAll();
   
   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
+
   picsApiService.resetPage();
-  picsApiService.fetchPicsPixabay().then(hits =>
-  
-  {
-    if (hits.length > 0) {
-      console.log(hits.length);
-      createMarkup(hits);
-    Notiflix.Notify.success('Hooray! We found totalHits images.')
-    } else {
-      Notiflix.Notify.failure(
-          'Sorry, there are no images matching your search query. Please try again.')
-    }
-    
-  }).catch(error => { callError(error) });
 
+  if (picsApiService.query === "") {
+    clearAll();
 
+    Notiflix.Notify.warning('Type something.')
 
+    return;
 
-   
+  } else {
+    picsApiService.fetchPicsPixabay()
+      .then(hits => {
 
-    
+        console.log(hits)
+              
+        if (hits.length > 0) {
+                  
+          console.log(hits.length);
+                   
+          createMarkup(hits);
+                      
+          Notiflix.Notify.success('Hooray! We found totalHits images.')
+        } else {
+          
+          
+          clearAll();
+
+        callError()}
+                
+      })
+      
+  }
+
 }
+
+  
 
 function onLoad() { 
   picsApiService.fetchPicsPixabay().then(createMarkup);
