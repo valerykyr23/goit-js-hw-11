@@ -1,3 +1,5 @@
+
+
 export default class PicsApiService {
 
     constructor() {
@@ -15,9 +17,9 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&or
     
     console.log(this)
 
-
-     return fetch(url)
-        .then(response => response.json())
+   
+        return fetch(url)
+            .then(response => response.json())
             .then(data => {
 
 
@@ -27,7 +29,7 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&or
 
                 return data.hits;
             })
-
+        
     }
 
 

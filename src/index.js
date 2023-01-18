@@ -35,43 +35,24 @@ function onSearch(event) {
   
   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
   picsApiService.resetPage();
-  picsApiService.fetchPicsPixabay().then(createMarkup);
+  picsApiService.fetchPicsPixabay().then(hits =>
+  
+  {
+    if (hits.length > 0) {
+      console.log(hits.length);
+      createMarkup(hits);
+    Notiflix.Notify.success('Hooray! We found totalHits images.')
+    } else {
+      Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.')
+    }
+    
+  }).catch(error => { callError(error) });
 
 
-//   if (inputValue === "") {
-//     clearAll();
 
-//      Notiflix.Notify.warning('Please type something');
 
-//     return;
-
-//   } else {
-
-//     fetchPicsPixabay(inputValue)
    
-//       .then(data => {
-//         console.log(data)
-        
-// if(data.hits.length === 0) {
-//   throw new Error(response.statusText)
-// }
-
-// else {
-//   clearAll();
-        
-//         createMarkup(data);
-
-//          Notiflix.Notify.success('WOOOOOW! Wounderfull pictures!You have success!');
-//         }
-//       })
-//       .catch(error => {
-
-//         clearAll();
-
-//         callError(error);
-
-//         })
-//   }
 
     
 }
