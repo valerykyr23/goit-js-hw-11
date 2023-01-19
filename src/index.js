@@ -97,32 +97,82 @@ Notiflix.Notify.failure("We're sorry, but you've reached the end of search resul
 function createMarkup(array) {
 
   
-  const markup = array.map(hit =>  `<div class="photo-card">
-        <a class="gallery-item" href="${hit.largeImageURL}">
+  const markup = array.map(hit =>  `<div class="general-photo-card-container">    
+    
+  
+
+
+        <a class="gallery-img-link" href="${hit.largeImageURL}">
+
+
+        
+
           <img
-            class="gallery__image"
+            class="gallery-image"
             src="${hit.webformatURL}"
             alt="${hit.tags}"
             loading="lazy"
-        /></a>
-        <div class="info">
-          <div class="info__box">
+        />
+        
+        </a>
+
+
+        
+
+        <div class="img-general-info-container">
+
+
+
+          <div class="every-img-info-box-title-number-inside">
             
-            <p class="info-counter">Likes:${hit.likes.toLocaleString()}</p>
+            <p class="">
+
+            <b>Likes</b>
+
+            </p>
+
+            <span>${hit.likes}</span>
           </div>
-          <div class="info__box">
+
+
+          <div class="every-img-info-box-title-number-inside">
            
-            <p class="info-counter">Views:${hit.views.toLocaleString()}</p>
+            <p class="">
+
+            <b>Views</b>
+
+            </p>
+
+              <span>${hit.views}</span>
           </div>
-          <div class="info__box">
+
+
+          <div class="every-img-info-box-title-number-inside">
             
-            <p class="info-counter">Comments:${hit.comments.toLocaleString()}</p>
+            <p class="">
+
+            <b>Comments</b>
+
+            </p>
+            <span>${hit.comments}</span>
           </div>
-          <div class="info__box">
+
+
+          <div class="every-img-info-box-title-number-inside">
             
-            <p class="info-counter">Downloads:${hit.downloads.toLocaleString()}</p>
+            <p class="">
+            
+            <b>Downloads</b>
+
+            </p>
+
+            <span>${hit.downloads}</span>
           </div>
+
+
         </div>
+
+
       </div>`).join("");
   
    
