@@ -59,6 +59,17 @@ display: flex;
         text-align: center;
         line-height: 0.2em;
         font-size: 0.7em;
+        margin: 2px;
     }
 
-    
+    .load-more {
+        margin: 0 auto;
+        display: block;
+    }
+
+    .search-form {
+        display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            padding: 10px 20px;
+    }
