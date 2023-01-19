@@ -43,7 +43,7 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${value}&image_type="photo"&orientati
 
 
 // `<div class="photo-card">
-//    <a class="gallery-item" href="${hit.largeImageURL}">  
+//    <a class="gallery-item" href="${hit.largeImageURL}">
 //   <img  class="gallery-img" src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" /> </a>
 //   <div class="info">
 //     <p class="info-item">
@@ -60,3 +60,37 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${value}&image_type="photo"&orientati
 //     </p>
 //   </div>
 // </div>`).join("");
+
+
+//  picsApiService.fetchPicsPixabay()
+//       .then(hits => {
+
+//         console.log(hits)
+              
+//         if (hits.length > 0) {
+                  
+//           console.log(hits.length);
+                   
+//           createMarkup(hits);
+          
+//           Notiflix.Notify.success('Hooray! We found totalHits images.');
+
+//           refs.buttonLoadMore.style.display = 'block';
+//         } else {
+          
+          
+//           clearAll();
+
+//           callError();
+
+//           refs.buttonLoadMore.style.display = 'none';
+
+//         }
+                
+      
+      
+//       })
+
+//     }
+
+// }

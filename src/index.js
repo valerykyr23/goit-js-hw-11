@@ -50,15 +50,18 @@ function onSearch(event) {
 
   } else {
     picsApiService.fetchPicsPixabay()
-      .then(hits => {
+      .then(( {hits,totalHits}) => {
 
-        console.log(hits)
+        const infoResponseObj = {
+          hits: hits,
+          totalHits: totalHits,
+        }
               
-        if (hits.length > 0) {
+        if (infoResponseObj.hits.length > 0) {
                   
-          console.log(hits.length);
+          console.log(infoResponseObj.hits.length);
                    
-          createMarkup(hits);
+          createMarkup(infoResponseObj.hits);
           
           Notiflix.Notify.success('Hooray! We found totalHits images.');
 
@@ -74,16 +77,39 @@ function onSearch(event) {
 
         }
                 
-      })
       
-  }
+      
+      })
+
+    }
 
 }
 
+
   
 
-function onLoad() { 
-  picsApiService.fetchPicsPixabay().then(createMarkup);
+function onLoad() {
+  picsApiService.fetchPicsPixabay().then(({ hits, totalHits }) => {
+
+    const infoResponseObj = {
+      hits: hits,
+      totalHits: totalHits,
+    }
+
+    if (infoResponseObj.hits < infoResponseObj.totalHits) {
+
+      Notiflix.Notify.info("We are sorry, but you've reached the end of search results.");
+
+      refs.buttonLoadMore.style.display = 'none';
+      
+    } else {
+      createMarkup(infoResponseObj.hits);
+   }
+      
+    
+    
+    
+  })
 }
 
 
@@ -94,10 +120,10 @@ Notiflix.Notify.failure("We're sorry, but you've reached the end of search resul
 
 
 
-function createMarkup(array) {
+function createMarkup(value) {
 
   
-  const markup = array.map(hit =>  `<div class="general-photo-card-container">    
+  const markup = value.map(hit =>  `<div class="general-photo-card-container">    
     
   
 

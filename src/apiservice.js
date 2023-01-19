@@ -12,7 +12,7 @@ fetchPicsPixabay() {
     
 const API_KEY = "32855803-d56bfd48c48aac08c2ef5d962";
 const BASE_URL = "https://pixabay.com/api";
-const url = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&orientation="horizontal"&safesearch=true&page=${this.pageNumber}&per_page=40`;
+const url = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&orientation="horizontal"&safesearch=true&page=${this.pageNumber}&per_page=100`;
     
     
     console.log(this)
@@ -23,11 +23,11 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&or
         .then(data => {
 
 
-                console.log(data.hits);
+                console.log(data);
 
                 this.pageNumber += 1;  
 
-                return data.hits;
+                return data;
             })
         
     }
