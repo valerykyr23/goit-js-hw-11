@@ -97,25 +97,34 @@ Notiflix.Notify.failure("We're sorry, but you've reached the end of search resul
 function createMarkup(array) {
 
   
-  const markup = array.map(hit => `<div class="photo-card">
-   <a href="${hit.largeImageURL}">  
-  <img  class="gallery_img" src="${hit.webformatURL}" alt="${hit.tags}" loading="lazy" /> </a>
-  <div class="info">
-    <p class="info-item">
-      <b>Likes: ${hit.likes}</b>
-    </p>
-    <p class="info-item">
-      <b>Views: ${hit.views}</b>
-    </p>
-    <p class="info-item">
-      <b>Comments: ${hit.comments}</b>
-    </p>
-    <p class="info-item">
-      <b>Downloads: ${hit.downloads}</b>
-    </p>
-  </div>
-</div>`).join("");
-    
+  const markup = array.map(hit =>  `<div class="photo-card">
+        <a class="gallery-item" href="${hit.largeImageURL}">
+          <img
+            class="gallery__image"
+            src="${hit.webformatURL}"
+            alt="${hit.tags}"
+            loading="lazy"
+        /></a>
+        <div class="info">
+          <div class="info__box">
+            
+            <p class="info-counter">Likes:${hit.likes.toLocaleString()}</p>
+          </div>
+          <div class="info__box">
+           
+            <p class="info-counter">Views:${hit.views.toLocaleString()}</p>
+          </div>
+          <div class="info__box">
+            
+            <p class="info-counter">Comments:${hit.comments.toLocaleString()}</p>
+          </div>
+          <div class="info__box">
+            
+            <p class="info-counter">Downloads:${hit.downloads.toLocaleString()}</p>
+          </div>
+        </div>
+      </div>`).join("");
+  
    
   refs.gallery.insertAdjacentHTML("beforeend", markup);
 
