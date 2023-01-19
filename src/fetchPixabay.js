@@ -16,3 +16,27 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${value}&image_type="photo"&orientati
         return response.json();
 })
 }
+
+
+
+ // {webformatURL,largeImageURL,tags,likes,views,comments,downloads}
+
+// function onSearch(event) {
+
+//   event.preventDefault();
+
+//   clearAll();
+  
+//   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
+//   picsApiService.resetPage();
+//   picsApiService.fetchPicsPixabay().then(hits => {
+//     if (hits.length > 0) {
+//       console.log(hits.length);
+//       createMarkup(hits);
+//       Notiflix.Notify.success('Hooray! We found totalHits images.')
+//       } else {
+//         Notiflix.Notify.failure(
+//             'Sorry, there are no images matching your search query. Please try again.')
+//       }
+//     }) 
+// }
