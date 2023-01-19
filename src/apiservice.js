@@ -19,7 +19,16 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&or
 
    
     return fetch(url)
-        .then(response => response.json())
+        .then(response => {
+
+            console.log(response)
+            
+        if (!response.ok ) {
+     throw new Error(response.statusText)
+        }
+
+        return response.json();
+})
         .then(data => {
 
 

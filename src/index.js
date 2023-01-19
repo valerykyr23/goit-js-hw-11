@@ -79,6 +79,9 @@ function onSearch(event) {
                 
       
       
+      }).catch(error => {
+
+        callError(error);
       })
 
     }
@@ -101,7 +104,7 @@ function onLoad() {
       Notiflix.Notify.info("We are sorry, but you've reached the end of search results.");
 
       refs.buttonLoadMore.style.display = 'none';
-      
+
     } else {
       createMarkup(infoResponseObj.hits);
    }
