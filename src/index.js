@@ -57,7 +57,7 @@ function onSearch(event) {
 
   // Если инпут не пустой - сделай фетч
         
-    picsApiService.fetchPicsPixabay()
+ picsApiService.fetchPicsPixabay()
     .then(({ hits, totalHits }) => {
         
 
@@ -66,15 +66,6 @@ function onSearch(event) {
         createMarkup(hits);
         new SimpleLightbox('.gallery a');
         refs.buttonLoadMore.style.display = 'block';
-
-        // if (infoResponseObj.hits < infoResponseObj.totalHits) {
-        //   refs.buttonLoadMore.style.display = 'block';
-        // } else {
-        //   refs.buttonLoadMore.style.display = 'none';
-        //   Notiflix.Notify.info(
-        //     "We're sorry, but you've reached the end of search results."
-        //   );
-        // }
       } else {
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
@@ -86,15 +77,14 @@ function onSearch(event) {
     .catch(error => console.log('ERROR: ' + error));
 }
 
-
 // Не обрабатывается ошибка 400
 
 function onLoad() {
 
 
-  picsApiService.fetchPicsPixabay().then(({ hits, totalHits }) => {
+  picsApiService.fetchPicsPixabay().then(({ hits, totalHits } ) => {
 
-   
+   console.log("these are hits from load more:" + hits)
 
     if (hits.length === 0) {
       refs.buttonLoadMore.style.display = 'none';
@@ -104,9 +94,9 @@ function onLoad() {
     }
 
  createMarkup(hits);
-     new SimpleLightbox('.gallery a');
+     new SimpleLightbox('.gallery a').refresh();;
 
-  }).catch(error => console.log('ERROR: ' + error));
+  }).catch(error => console.log('ERROR: ' + error))
 }
 
 
@@ -142,7 +132,7 @@ function createMarkup(value) {
         <p class="info-item">
           <p><b>Downloads</b> <br>${hit.downloads}</br></p>
         </p>
-        
+
         </div>
       </div>`).join("");
   
