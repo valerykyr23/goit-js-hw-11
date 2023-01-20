@@ -129,35 +129,20 @@ function createMarkup(value) {
         </a>
         
         <div class="img-general-info-container">
-          <div class="every-img-info-box-title-number-inside">
-            
-            <p class="">
-            <b>Likes</b>
-            </p>
-            <span>${hit.likes}</span>
-          </div>
-          <div class="every-img-info-box-title-number-inside">
-           
-            <p class="">
-            <b>Views</b>
-            </p>
-              <span>${hit.views}</span>
-          </div>
-          <div class="every-img-info-box-title-number-inside">
-            
-            <p class="">
-            <b>Comments</b>
-            </p>
-            <span>${hit.comments}</span>
-          </div>
-          <div class="every-img-info-box-title-number-inside">
-            
-            <p class="">
-            
-            <b>Downloads</b>
-            </p>
-            <span>${hit.downloads}</span>
-          </div>
+
+          <p class="info-item">
+          <p><b>Likes</b> <br>${hit.likes}</br></p>
+        </p>
+        <p class="info-item">
+          <p><b>Views</b> <br>${hit.views}</br></p>
+        </p>
+        <p class="info-item">
+          <p><b>Comments</b> <br>${hit.comments}</br></p>
+        </p>
+        <p class="info-item">
+          <p><b>Downloads</b> <br>${hit.downloads}</br></p>
+        </p>
+        
         </div>
       </div>`).join("");
   

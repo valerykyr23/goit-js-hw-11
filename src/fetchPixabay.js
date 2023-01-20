@@ -425,7 +425,39 @@ const url = `${BASE_URL}/?key=${API_KEY}&q=${value}&image_type="photo"&orientati
 
 //           refs.buttonLoadMore.style.display = 'none';
 
-//         }        
+//         }
 //       })
       
 //     }
+
+{/* <div class="img-general-info-container">
+          <div class="every-img-info-box-title-number-inside">
+            
+            
+            <b>Likes</b>
+            
+            <span>${hit.likes}</span>
+          </div>
+          <div class="every-img-info-box-title-number-inside">
+           
+            
+            <b>Views</b>
+           
+              <span>${hit.views}</span>
+          </div>
+          <div class="every-img-info-box-title-number-inside">
+            
+            
+            <b>Comments</b>
+           
+            <span>${hit.comments}</span>
+          </div>
+          <div class="every-img-info-box-title-number-inside">
+            
+            
+            
+            <b>Downloads</b>
+            
+            <span>${hit.downloads}</span>
+          </div>
+        </div> */}
