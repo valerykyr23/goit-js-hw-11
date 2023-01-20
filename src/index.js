@@ -1,10 +1,18 @@
-import "./styles.css/gallery.css";
+
+// Импорты других файлов и компонентов
+
+import "./css/styles.css";
+import PicsApiService from "./apiservice";
+
+// Импорты библиотек и инициализация
+
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 Notiflix.Notify.init({ cssAnimationStyle: "zoom", fontAwesomeIconStyle: "shadow" });
-import PicsApiService from "./apiservice";
+import axios from 'axios';
 
+// Доступ к дом-елементам
 
 const refs = {
     input: document.querySelector("input"),
@@ -15,29 +23,26 @@ const refs = {
     
 }
 
+// Слушатели событий
 
 refs.form.addEventListener("submit", onSearch); 
 refs.buttonLoadMore.addEventListener("click", onLoad);
+
+
 refs.buttonLoadMore.style.display = 'none';
-
-
-console.log(SimpleLightbox);
-
-
 const picsApiService = new PicsApiService();
 
-console.log(picsApiService);
+
 
 
 function onSearch(event) {
-
   event.preventDefault();
-
   clearAll();
   
-  picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
 
+  picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
   picsApiService.resetPage();
+
 
   if (picsApiService.query === "") {
     clearAll();
@@ -48,94 +53,72 @@ function onSearch(event) {
 
     return;
 
-  } else {
+  }
+
+  // Если инпут не пустой - сделай фетч
+        
     picsApiService.fetchPicsPixabay()
-      .then(( {hits,totalHits}) => {
+    .then(({ hits, totalHits }) => {
+        
 
-        const infoResponseObj = {
-          hits: hits,
-          totalHits: totalHits,
-        }
-              
-        if (infoResponseObj.hits.length > 0) {
-                  
-          console.log(infoResponseObj.hits.length);
-                   
-          createMarkup(infoResponseObj.hits);
-          
-          Notiflix.Notify.success('Hooray! We found totalHits images.');
+      if (hits.length > 0) {
+        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
+        createMarkup(hits);
+        new SimpleLightbox('.gallery a');
+        refs.buttonLoadMore.style.display = 'block';
 
-          refs.buttonLoadMore.style.display = 'block';
-        } else {
-          
-          
-          clearAll();
-
-          callError();
-
-          refs.buttonLoadMore.style.display = 'none';
-
-        }
-                
-      
-      
-      }).catch(error => {
-
-        callError(error);
-      })
-
-    }
-
+        // if (infoResponseObj.hits < infoResponseObj.totalHits) {
+        //   refs.buttonLoadMore.style.display = 'block';
+        // } else {
+        //   refs.buttonLoadMore.style.display = 'none';
+        //   Notiflix.Notify.info(
+        //     "We're sorry, but you've reached the end of search results."
+        //   );
+        // }
+      } else {
+        Notiflix.Notify.failure(
+          'Sorry, there are no images matching your search query. Please try again.'
+        );
+        clearAll();
+        refs.buttonLoadMore.style.display = 'none';
+      }
+    })
+    .catch(error => console.log('ERROR: ' + error));
 }
 
 
-  
+// Не обрабатывается ошибка 400
 
 function onLoad() {
+
+
   picsApiService.fetchPicsPixabay().then(({ hits, totalHits }) => {
 
-    const infoResponseObj = {
-      hits: hits,
-      totalHits: totalHits,
+   
+
+    if (hits.length === 0) {
+      refs.buttonLoadMore.style.display = 'none';
+      Notiflix.Notify.info(
+        "We're sorry, but you've reached the end of search results."
+      )
     }
 
-    if (infoResponseObj.hits < infoResponseObj.totalHits) {
+ createMarkup(hits);
+     new SimpleLightbox('.gallery a');
 
-      Notiflix.Notify.info("We are sorry, but you've reached the end of search results.");
-
-      refs.buttonLoadMore.style.display = 'none';
-
-    } else {
-      createMarkup(infoResponseObj.hits);
-   }
-      
-    
-    
-    
-  })
+  }).catch(error => console.log('ERROR: ' + error));
 }
 
-
-
-function callError (error) { 
-Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-}
 
 
 
 function createMarkup(value) {
 
-  
   const markup = value.map(hit =>  `<div class="general-photo-card-container">    
     
   
-
-
         <a class="gallery-img-link" href="${hit.largeImageURL}">
-
-
         
-
           <img
             class="gallery-image"
             src="${hit.webformatURL}"
@@ -144,70 +127,42 @@ function createMarkup(value) {
         />
         
         </a>
-
-
         
-
         <div class="img-general-info-container">
-
-
-
           <div class="every-img-info-box-title-number-inside">
             
             <p class="">
-
             <b>Likes</b>
-
             </p>
-
             <span>${hit.likes}</span>
           </div>
-
-
           <div class="every-img-info-box-title-number-inside">
            
             <p class="">
-
             <b>Views</b>
-
             </p>
-
               <span>${hit.views}</span>
           </div>
-
-
           <div class="every-img-info-box-title-number-inside">
             
             <p class="">
-
             <b>Comments</b>
-
             </p>
             <span>${hit.comments}</span>
           </div>
-
-
           <div class="every-img-info-box-title-number-inside">
             
             <p class="">
             
             <b>Downloads</b>
-
             </p>
-
             <span>${hit.downloads}</span>
           </div>
-
-
         </div>
-
-
       </div>`).join("");
   
    
   refs.gallery.insertAdjacentHTML("beforeend", markup);
-
-  const lightbox = new SimpleLightbox('.gallery a', {captionsData: "alt", captionDelay: 250});
   
 }
 
