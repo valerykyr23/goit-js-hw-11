@@ -84,7 +84,7 @@ function onLoad() {
 
   picsApiService.fetchPicsPixabay().then(({ hits, totalHits } ) => {
 
-   console.log("these are hits from load more:" + hits)
+   
 
     if (hits.length === 0) {
       refs.buttonLoadMore.style.display = 'none';
