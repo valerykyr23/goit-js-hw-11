@@ -1,4 +1,3 @@
-
 // Импорты других файлов и компонентов
 
 import "./css/styles.css";
@@ -10,7 +9,6 @@ import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 import Notiflix from 'notiflix';
 Notiflix.Notify.init({ cssAnimationStyle: "zoom", fontAwesomeIconStyle: "shadow" });
-import axios from 'axios';
 
 // Доступ к дом-елементам
 
@@ -34,44 +32,37 @@ const picsApiService = new PicsApiService();
 
 
 
-
 function onSearch(event) {
   event.preventDefault();
-  clearAll();
   
-
   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
   picsApiService.resetPage();
 
-
   if (picsApiService.query === "") {
-    clearAll();
-
-    Notiflix.Notify.warning('Please,type something.');
-
-    refs.buttonLoadMore.style.display = 'none';
-
+    Notiflix.Notify.warning('Please, type something.');
     return;
-
   }
 
+  refs.buttonLoadMore.style.display = 'none';
+  // clearAll();
+  
   // Если инпут не пустой - сделай фетч
         
- picsApiService.fetchPicsPixabay()
+  picsApiService.fetchPicsPixabay()
     .then(({ hits, totalHits }) => {
-        
 
       if (hits.length > 0) {
+        clearAll();
         Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
         createMarkup(hits);
         new SimpleLightbox('.gallery a');
         refs.buttonLoadMore.style.display = 'block';
+
       } else {
+        clearAll();
         Notiflix.Notify.failure(
           'Sorry, there are no images matching your search query. Please try again.'
         );
-        clearAll();
-        refs.buttonLoadMore.style.display = 'none';
       }
     })
     .catch(error => console.log('ERROR: ' + error));
@@ -82,39 +73,41 @@ function onSearch(event) {
 function onLoad() {
 
 
-  picsApiService.fetchPicsPixabay().then(({ hits, totalHits } ) => {
-
-   
+  picsApiService.fetchPicsPixabay().then(({ hits }) => {
 
     if (hits.length === 0) {
       refs.buttonLoadMore.style.display = 'none';
       Notiflix.Notify.info(
         "We're sorry, but you've reached the end of search results."
       )
+      return;
     }
 
- createMarkup(hits);
+    createMarkup(hits);
     new SimpleLightbox('.gallery a').refresh();
 
 
     const { height: cardHeight } = document
-  .querySelector(".gallery")
-  .firstElementChild.getBoundingClientRect();
+      .querySelector(".gallery")
+      .firstElementChild.getBoundingClientRect();
 
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: "smooth",
-});
+    window.scrollBy({
+      top: cardHeight * 2,
+      behavior: "smooth",
+    });
 
-  }).catch(error => console.log('ERROR: ' + error))
+  }).catch(error => Notiflix.Notify.info(error.message));
 }
-
-
 
 
 function createMarkup(value) {
 
-  const markup = value.map(hit =>  `<div class="general-photo-card-container">    
+  
+
+  const markup = value.map(hit => 
+    
+
+    `<div class="general-photo-card-container">    
     
   
         <a class="gallery-img-link" href="${hit.largeImageURL}">
@@ -129,22 +122,12 @@ function createMarkup(value) {
         </a>
         
         <div class="img-general-info-container">
-
-          <p class="info-item">
-          <p><b>Likes</b> <br>${hit.likes}</br></p>
-        </p>
-        <p class="info-item">
-          <p><b>Views</b> <br>${hit.views}</br></p>
-        </p>
-        <p class="info-item">
-          <p><b>Comments</b> <br>${hit.comments}</br></p>
-        </p>
-        <p class="info-item">
-          <p><b>Downloads</b> <br>${hit.downloads}</br></p>
-        </p>
-
+          <p><b>Likes</b><br>${hit.likes}</br></p>
+          <p><b>Views</b><br>${hit.views}</br></p>
+          <p><b>Comments</b><br>${hit.comments}</br></p>
+          <p><b>Downloads</b><br>${hit.downloads}</br></p>
         </div>
-      </div>`).join("");
+      </div>` ).join("");
   
    
   refs.gallery.insertAdjacentHTML("beforeend", markup);
@@ -155,5 +138,3 @@ function createMarkup(value) {
 function clearAll() {
   refs.gallery.innerHTML = "";
 }
-
-
