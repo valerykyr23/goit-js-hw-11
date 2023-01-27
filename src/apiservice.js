@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { onSpinnerDisabled, onSpinnerEnabled } from './index';
 
 export default class PicsApiService {
     MAX_RESULTS = 500;
@@ -16,12 +17,18 @@ export default class PicsApiService {
         const FULL_URL = `${BASE_URL}/?key=${API_KEY}&q=${this.myQuery}&image_type="photo"&orientation="horizontal"&safesearch=true&page=${this.pageNumber}&per_page=${this.perPage}`
 
         try {
+
+            onSpinnerEnabled();
             if ((this.pageNumber - 1) * this.perPage > this.MAX_RESULTS) {
                 throw new Error("We're sorry, but you've reached the end of search results.")
             }
+
+            
             const response = await axios.get(FULL_URL);
             this.pageNumber += 1;  
+            
             return response.data;
+            onSpinnerDisabled();
             
         } catch (error) {
             throw error;

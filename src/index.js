@@ -34,6 +34,11 @@ const picsApiService = new PicsApiService();
 
 function onSearch(event) {
   event.preventDefault();
+
+   onSpinnerEnabled();
+  setTimeout(() => {
+    onSpinnerDisabled();
+  }, 2000);
   
   picsApiService.query = event.currentTarget.elements.searchQuery.value.trim();
   picsApiService.resetPage();
@@ -82,7 +87,9 @@ function onLoad() {
       )
       return;
     }
-
+setTimeout(() => {
+    onSpinnerDisabled();
+  }, 2000);
     createMarkup(hits);
     new SimpleLightbox('.gallery a').refresh();
 
@@ -174,3 +181,24 @@ function scrollUpTop() {
     behavior: 'smooth',
   });
 }
+
+// Спинер
+
+const spinnerEl = document.querySelector('.backdrop-spinner');
+
+function onSpinnerEnabled() {
+  return spinnerEl.classList.remove('visually-hidden');
+}
+function onSpinnerDisabled() {
+  return spinnerEl.classList.add('visually-hidden');
+}
+export { onSpinnerEnabled, onSpinnerDisabled };
+
+
+// refs.buttonSearch.addEventListener('click', e => {
+  
+//   onSpinnerEnabled();
+//   setTimeout(() => {
+//     onSpinnerDisabled();
+//   }, 2000);
+// });
